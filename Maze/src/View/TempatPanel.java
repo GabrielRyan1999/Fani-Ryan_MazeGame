@@ -9,18 +9,17 @@ package View;
  *
  * @author Ryan
  */
-
-    import java.awt.Color;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import Model.Sel;
-import Model.Tempat;
+import model.Sel;
+import model.Tempat;
 
 /**
  *
- * @author user only
+ * @author Ryan
  */
 public class TempatPanel extends JPanel {
 
@@ -49,8 +48,8 @@ public class TempatPanel extends JPanel {
             for (int i = 0; i < tempat.getDaftarSel().size(); i++) {
                 Sel sel = tempat.getDaftarSel().get(i);
                 g.setColor(sel.getWarna());
-                g.fillOval(sel.getKolom()*sel.getLebar(),
-                        sel.getBaris()*sel.getTinggi(),
+                g.fillOval(sel.getKolom() * sel.getLebar(),
+                        sel.getBaris() * sel.getTinggi(),
                         sel.getLebar(),
                         sel.getTinggi());
             }
@@ -72,4 +71,4 @@ public class TempatPanel extends JPanel {
     }
 
 }
-}
+
