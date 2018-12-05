@@ -5,9 +5,15 @@
  */
 package model;
 
-import model.Tempat;
 import java.awt.Color;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,8 +29,9 @@ public class Sel implements Serializable {
     private int lebar;
     private int tinggi;
     private Color warna;
-
+    private ArrayList<Sel> daftarSel;
     public Sel() {
+        daftarSel = new ArrayList<>();
     }
 
     public Sel(char nilai, int baris, int kolom, Color warna) {
@@ -142,6 +149,16 @@ public class Sel implements Serializable {
 
     public void setTinggi(int tinggi) {
         this.tinggi = tinggi;
+    }
+
+    
+    public ArrayList<Sel> getDaftarSel() {
+        return daftarSel;
+    }
+
+    
+    public void setDaftarSel(ArrayList<Sel> daftarSel) {
+        this.daftarSel = daftarSel;
     }
 
 }
