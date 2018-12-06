@@ -115,19 +115,39 @@ public class GameFrame extends JFrame {
         this.pindahKananButton = new JButton("Kanan");
         southPanel.add(pindahKananButton);
         pindahKananButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 pindahKanan();
             }
         });
+        
         this.pindahKiriButton = new JButton("Kiri");
         southPanel.add(pindahKiriButton);
-
+        pindahKiriButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pindahKiri();
+            }
+        });
+        
         this.pindahAtasButton = new JButton("Atas");
         southPanel.add(pindahAtasButton);
-
+        pindahAtasButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pindahAtas();
+            }
+        });
+        
         this.pindahBawahButton = new JButton("Bawah");
         southPanel.add(pindahBawahButton);
-
+        pindahBawahButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pindahBawah();
+            }
+        });
+        
         this.tambahButton = new JButton("tambahBola");
         southPanel.add(tambahButton);
 
