@@ -98,12 +98,6 @@ public class Sel implements Serializable {
         }
     }
 
-    public void geserKanan(int x) {
-        if (isBatasKanan() == false) {
-            this.setKolom(kolom += x);
-        }
-    }
-
     /**
      * Fungsi untuk menggeser sel ke kiri
      */
@@ -123,27 +117,39 @@ public class Sel implements Serializable {
         return false;
     }
 
-    public void geserKiri(int x) {
+    /**
+     * Fungsi untuk menggeser sel ke kanan
+     */
+    public void geserKanan() {
+        if (isBatasKanan() == false) {
+            kolom++;
+        }
+    }
+
+    /**
+     * Fungsi untuk menggeser sel ke kiri
+     */
+    public void geserKiri() {
         if (isBatasKiri() == false) {
-            this.setKolom(kolom -= x);
+            kolom--;
         }
     }
 
     /**
      * Fungsi untuk menggeser sel ke atas
      */
-    public void geserAtas(int x) {
+    public void geserAtas() {
         if (isBatasAtas() == false) {
-            this.setBaris(baris -= x);
+            baris--;
         }
     }
 
     /**
      * Fungsi untuk menggeser sel ke bawah
      */
-    public void geserBawah(int x) {
+    public void geserBawah() {
         if (isBatasBawah() == false) {
-            this.setBaris(baris += x);
+           baris++;
         }
     }
 

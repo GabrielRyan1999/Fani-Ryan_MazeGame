@@ -126,6 +126,7 @@ public class GameFrame extends JFrame {
 
         this.tambahButton = new JButton("tambahBola");
         southPanel.add(tambahButton);
+        
         tambahButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -225,13 +226,13 @@ public class GameFrame extends JFrame {
         tempatPanel.setTempat(tmp);
     }
 
-    public void pindahBawah(int x) {
+    public void pindahBawah() {
 
         for (int i = 0; i < getTempatPanel().getTempat().getDaftarSel().size(); i++) {
             // set posisiX yang baru
             if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
-                getTempatPanel().getTempat().getDaftarSel().get(i).geserBawah(x);
-                getTempatPanel().getTempat().getDaftarSel().get(i + 8 * x).geserAtas(x);
+                getTempatPanel().getTempat().getDaftarSel().get(i).geserBawah();
+                
             }
         }
         // gambar ulang tempat Panel
