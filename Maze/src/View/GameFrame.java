@@ -37,6 +37,8 @@ public class GameFrame extends JFrame {
     private JTextField perintahText;
     private JButton pindahKananButton;
     private JButton pindahKiriButton;
+    private JButton pindahAtasButton;
+    private JButton pindahBawahButton;
     private JButton tambahButton;
     private JButton hapusButton;
 
@@ -64,7 +66,6 @@ public class GameFrame extends JFrame {
     }
 
     public void init() {
-        
 
         // set menu Bar
         menuBar = new JMenuBar();
@@ -114,10 +115,14 @@ public class GameFrame extends JFrame {
         this.pindahKananButton = new JButton("Kanan");
         southPanel.add(pindahKananButton);
 
-        
-
         this.pindahKiriButton = new JButton("Kiri");
         southPanel.add(pindahKiriButton);
+
+        this.pindahAtasButton = new JButton("Atas");
+        southPanel.add(pindahAtasButton);
+
+        this.pindahBawahButton = new JButton("Bawah");
+        southPanel.add(pindahBawahButton);
 
         this.tambahButton = new JButton("tambahBola");
         southPanel.add(tambahButton);
@@ -170,11 +175,10 @@ public class GameFrame extends JFrame {
      * Fungsi untuk memindahkan sel dan menggambar ulang
      */
     public void pindahKanan(int x) {
-        // posisiX seluruh sel ditambah 20
-        // sehingga sel akan terlihat bergerak ke kanan
+
         for (int i = 0; i < getTempatPanel().getTempat().getDaftarSel().size(); i++) {
             // set posisiX yang baru
-             if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
+            if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
                 getTempatPanel().getTempat().getDaftarSel().get(i).geserKanan(x);
                 getTempatPanel().getTempat().getDaftarSel().get(i + x).geserKiri(x);
             }
@@ -186,9 +190,9 @@ public class GameFrame extends JFrame {
         tmp.setIsi(getTempatPanel().getTempat().getIsi());
         tempatPanel.setTempat(tmp);
     }
-public void pindahKiri(int x) {
-        // posisiX seluruh sel ditambah 20
-        // sehingga sel akan terlihat bergerak ke kiri
+
+    public void pindahKiri(int x) {
+
         for (int i = 0; i < getTempatPanel().getTempat().getDaftarSel().size(); i++) {
             // set posisiX yang baru
             if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
@@ -205,8 +209,7 @@ public void pindahKiri(int x) {
     }
 
     public void pindahAtas(int x) {
-        // posisiX seluruh sel ditambah 20
-        // sehingga sel akan terlihat bergerak ke atas
+
         for (int i = 0; i < getTempatPanel().getTempat().getDaftarSel().size(); i++) {
             // set posisiX yang baru
             if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
@@ -223,8 +226,7 @@ public void pindahKiri(int x) {
     }
 
     public void pindahBawah(int x) {
-        // posisiX seluruh sel ditambah 20
-        // sehingga sel akan terlihat bergerak ke bawah
+
         for (int i = 0; i < getTempatPanel().getTempat().getDaftarSel().size(); i++) {
             // set posisiX yang baru
             if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
@@ -239,6 +241,7 @@ public void pindahKiri(int x) {
         tmp.setIsi(getTempatPanel().getTempat().getIsi());
         tempatPanel.setTempat(tmp);
     }
+
     /**
      * @return the tempatPanel
      */
@@ -254,4 +257,3 @@ public void pindahKiri(int x) {
     }
 
 }
-
