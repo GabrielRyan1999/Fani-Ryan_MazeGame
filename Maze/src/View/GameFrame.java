@@ -192,13 +192,13 @@ public class GameFrame extends JFrame {
         tempatPanel.setTempat(tmp);
     }
 
-    public void pindahKiri(int x) {
+    public void pindahKiri() {
 
         for (int i = 0; i < getTempatPanel().getTempat().getDaftarSel().size(); i++) {
             // set posisiX yang baru
             if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
-                getTempatPanel().getTempat().getDaftarSel().get(i).geserKiri(x);
-                getTempatPanel().getTempat().getDaftarSel().get(i - x).geserKanan(x);
+                getTempatPanel().getTempat().getDaftarSel().get(i).geserKiri();
+                
             }
         }
         // gambar ulang tempat Panel
