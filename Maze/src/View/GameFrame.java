@@ -114,12 +114,7 @@ public class GameFrame extends JFrame {
         this.pindahKananButton = new JButton("Kanan");
         southPanel.add(pindahKananButton);
 
-        pindahKananButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                pindahKanan();
-            }
-        });
+        
 
         this.pindahKiriButton = new JButton("Kiri");
         southPanel.add(pindahKiriButton);
@@ -174,19 +169,76 @@ public class GameFrame extends JFrame {
     /**
      * Fungsi untuk memindahkan sel dan menggambar ulang
      */
-    public void pindahKanan() {
+    public void pindahKanan(int x) {
         // posisiX seluruh sel ditambah 20
         // sehingga sel akan terlihat bergerak ke kanan
         for (int i = 0; i < getTempatPanel().getTempat().getDaftarSel().size(); i++) {
             // set posisiX yang baru
-            if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
-                getTempatPanel().getTempat().getDaftarSel().get(i).geserKanan();
+             if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
+                getTempatPanel().getTempat().getDaftarSel().get(i).geserKanan(x);
+                getTempatPanel().getTempat().getDaftarSel().get(i + x).geserKiri(x);
             }
         }
         // gambar ulang tempat Panel
         getTempatPanel().repaint();
+        Tempat tmp = new Tempat();
+        tmp.setDaftarSel(getTempatPanel().getTempat().getDaftarSel());
+        tmp.setIsi(getTempatPanel().getTempat().getIsi());
+        tempatPanel.setTempat(tmp);
+    }
+public void pindahKiri(int x) {
+        // posisiX seluruh sel ditambah 20
+        // sehingga sel akan terlihat bergerak ke kiri
+        for (int i = 0; i < getTempatPanel().getTempat().getDaftarSel().size(); i++) {
+            // set posisiX yang baru
+            if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
+                getTempatPanel().getTempat().getDaftarSel().get(i).geserKiri(x);
+                getTempatPanel().getTempat().getDaftarSel().get(i - x).geserKanan(x);
+            }
+        }
+        // gambar ulang tempat Panel
+        getTempatPanel().repaint();
+        Tempat tmp = new Tempat();
+        tmp.setDaftarSel(getTempatPanel().getTempat().getDaftarSel());
+        tmp.setIsi(getTempatPanel().getTempat().getIsi());
+        tempatPanel.setTempat(tmp);
     }
 
+    public void pindahAtas(int x) {
+        // posisiX seluruh sel ditambah 20
+        // sehingga sel akan terlihat bergerak ke atas
+        for (int i = 0; i < getTempatPanel().getTempat().getDaftarSel().size(); i++) {
+            // set posisiX yang baru
+            if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
+                getTempatPanel().getTempat().getDaftarSel().get(i).geserAtas(x);
+                getTempatPanel().getTempat().getDaftarSel().get(i - 8 * x).geserBawah(x);
+            }
+        }
+        // gambar ulang tempat Panel
+        getTempatPanel().repaint();
+        Tempat tmp = new Tempat();
+        tmp.setDaftarSel(getTempatPanel().getTempat().getDaftarSel());
+        tmp.setIsi(getTempatPanel().getTempat().getIsi());
+        tempatPanel.setTempat(tmp);
+    }
+
+    public void pindahBawah(int x) {
+        // posisiX seluruh sel ditambah 20
+        // sehingga sel akan terlihat bergerak ke bawah
+        for (int i = 0; i < getTempatPanel().getTempat().getDaftarSel().size(); i++) {
+            // set posisiX yang baru
+            if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
+                getTempatPanel().getTempat().getDaftarSel().get(i).geserBawah(x);
+                getTempatPanel().getTempat().getDaftarSel().get(i + 8 * x).geserAtas(x);
+            }
+        }
+        // gambar ulang tempat Panel
+        getTempatPanel().repaint();
+        Tempat tmp = new Tempat();
+        tmp.setDaftarSel(getTempatPanel().getTempat().getDaftarSel());
+        tmp.setIsi(getTempatPanel().getTempat().getIsi());
+        tempatPanel.setTempat(tmp);
+    }
     /**
      * @return the tempatPanel
      */
