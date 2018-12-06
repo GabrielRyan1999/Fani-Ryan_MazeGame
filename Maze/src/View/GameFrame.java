@@ -114,7 +114,11 @@ public class GameFrame extends JFrame {
 
         this.pindahKananButton = new JButton("Kanan");
         southPanel.add(pindahKananButton);
-
+        pindahKananButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                pindahKanan();
+            }
+        });
         this.pindahKiriButton = new JButton("Kiri");
         southPanel.add(pindahKiriButton);
 
@@ -126,7 +130,7 @@ public class GameFrame extends JFrame {
 
         this.tambahButton = new JButton("tambahBola");
         southPanel.add(tambahButton);
-        
+
         tambahButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -181,7 +185,7 @@ public class GameFrame extends JFrame {
             // set posisiX yang baru
             if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
                 getTempatPanel().getTempat().getDaftarSel().get(i).geserKanan();
-               
+
             }
         }
         // gambar ulang tempat Panel
@@ -198,7 +202,7 @@ public class GameFrame extends JFrame {
             // set posisiX yang baru
             if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
                 getTempatPanel().getTempat().getDaftarSel().get(i).geserKiri();
-                
+
             }
         }
         // gambar ulang tempat Panel
@@ -215,7 +219,7 @@ public class GameFrame extends JFrame {
             // set posisiX yang baru
             if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
                 getTempatPanel().getTempat().getDaftarSel().get(i).geserAtas();
-                
+
             }
         }
         // gambar ulang tempat Panel
@@ -232,7 +236,7 @@ public class GameFrame extends JFrame {
             // set posisiX yang baru
             if (getTempatPanel().getTempat().getDaftarSel().get(i).getNilai() == '@') {
                 getTempatPanel().getTempat().getDaftarSel().get(i).geserBawah();
-                
+
             }
         }
         // gambar ulang tempat Panel
