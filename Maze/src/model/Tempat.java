@@ -25,14 +25,23 @@ import javax.swing.JPanel;
  *
  * @author user only
  */
-public class Tempat extends JPanel implements Serializable {  
+public class Tempat extends JPanel implements Serializable {
+
+    private ArrayList<Wall> wall = new ArrayList<>();
     private ArrayList<Sel> sel = new ArrayList<>();
+    private Player pemain;
+    private Finish finish;
     private LinkedList<String> undo = new LinkedList<>();
+    private final char TEMBOK = '#';
+    private final char PLAYER = '@';
+    private final char KOSONG = '.';
+    private final char FINISH = 'O';
     private int lebarTempat = 0;
     private int tinggiTempat = 0;
     private int jarak = 30;
     private String isi;
     private boolean completed = false;
+    private File Alamatpeta;
     private ArrayList Allperintah = new ArrayList();
 
     public Tempat() {
@@ -47,11 +56,18 @@ public class Tempat extends JPanel implements Serializable {
         return isi;
     }
 
+    public ArrayList<Wall> getWall() {
+        return wall;
+    }
+
+    public void setWall(Wall wall) {
+        this.wall.add(wall);
+    }
+
     public void setIsi(String isi) {
         this.isi = isi;
     }
 
-   
     public ArrayList<Sel> getSel() {
         return sel;
     }
@@ -84,8 +100,54 @@ public class Tempat extends JPanel implements Serializable {
     }
 
     private void bacaKonfigurasi(File file) {
-        
-    
+        try {
+            if (file != null) {
+                FileInputStream fis = new FileInputStream(file);
+                Alamatpeta = file;
+                int lebar = 0;
+                int tinggi = 0;
+                int posisiX = 0;
+                int posisiY = 0;
+                Wall tembok;
+                String isi = "";
+                int data;
+                while ((data = fis.read()) != -1) {
+                    isi = isi + (char) data;
+                    if ((char) data != '\n') {
+                        if ((char) data == TEMBOK) {
+                            tembok = new Wall(posisiX, posisiY, lebar, tinggi, (char) data);
+                            setWall(tembok);
+                            posisiX++;
+                            lebar += jarak;
+                        } else if ((char) data == PLAYER) {
+                            pemain = new Player(posisiX, posisiY, lebar, tinggi, (char) data);
+                            posisiX++;
+                            lebar += jarak;
+                        } else if ((char) data == KOSONG) {
+                            posisiX++;
+                            lebar += jarak;
+                        } else if ((char) data == FINISH) {
+                            finish = new Finish(posisiX, posisiY, lebar, tinggi, (char) data);
+                            posisiX++;
+                            lebar += jarak;
+                        }
+                    } else {
+                        posisiY++;
+                        tinggi += jarak;
+                        lebarTempat = lebar;
+                        posisiX = 0;
+                        lebar = 0;
+                    }
+                    tinggiTempat = tinggi;
+                }
+                setIsi(isi);
+                setSel(pemain, wall, finish);
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(Tempat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @Override
@@ -127,12 +189,76 @@ public class Tempat extends JPanel implements Serializable {
 
     public void PerintahGerak(String input) {
         String in[] = input.split(" ");
-        
+
     }
 
-    private boolean cekPemainNabrakTembok(Sel pemain, String input) {  
-        return false;//default return false
+    private boolean cekPemainNabrakTembok(Sel pemain, String input) {
+        boolean bantu = false;
+        if (input.equals("l")) {
+            for (int i = 0; i < wall.size(); i++) {
+                Wall tembok = (Wall) wall.get(i);//ambil posisi tembok
+                if (pemain.PosisiKiriObjek(tembok)) {
+                    bantu = true;
+                    break;
+                }
+            }
+
+        } else if (input.equals("r")) {
+            for (int i = 0; i < wall.size(); i++) {
+                Wall tembok = (Wall) wall.get(i);//ambil posisi tembok
+                if (pemain.PosisiKananObjek(tembok)) {
+                    bantu = true;
+                    break;
+                }
+            }
+        } else if (input.equals("u")) {
+            for (int i = 0; i < wall.size(); i++) {
+                Wall tembok = (Wall) wall.get(i);//ambil posisi tembok
+                if (pemain.PosisiAtasObjek(tembok)) {
+                    bantu = true;
+                    break;
+                }
+            }
+        } else if (input.equals("d")) {
+            for (int i = 0; i < wall.size(); i++) {
+                Wall tembok = (Wall) wall.get(i);//ambil posisi tembok
+                if (pemain.PosisiBawahObjek(tembok)) {
+                    bantu = true;
+                    break;
+                }
+            }
+        }
+        return bantu;
     }
 
-    
+    public void pintas() {
+        pemain.setLebar(finish.getLebar());
+        pemain.setTinggi(finish.getTinggi());
+        isCompleted();
+        repaint();
+    }
+
+    public void isCompleted() {
+        if (pemain.getLebar() == finish.getLebar() && pemain.getTinggi() == finish.getTinggi()) {
+            completed = true;
+        }
+    }
+
+    public void restartLevel() {
+        Allperintah.clear();//hapus semua perintah yang tersimpan
+        wall.clear();//hapus tembok
+        sel.clear();//hapus map
+        completed = false;
+        bacaKonfigurasi(Alamatpeta);//set ulang gambar peta
+        repaint();//gambar ulang
+    }
+
+    public String getTeksPerintah() {
+        String bantu = "";
+        for (int i = 0; i < Allperintah.size(); i++) {
+            bantu = bantu + Allperintah.get(i) + "\n";
+        }
+        return bantu;
+    }
+
 }
