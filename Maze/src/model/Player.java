@@ -9,15 +9,14 @@ package model;
  *
  * @author Ryan
  */
-
-    public class Player extends Sel {
+public class Player extends Sel {
 
     private int lebar;
     private int tinggi;
     private char nilai;
 
     public Player(int x, int y, int lebar, int tinggi, char nilai) {
-        super(x, y);      
+        super(x, y);
         this.lebar = lebar;
         this.tinggi = tinggi;
         this.setNilai(nilai);
@@ -30,7 +29,34 @@ package model;
         this.setTinggi(ny);
     }
 
-   
+    @Override
+    public int getLebar() {
+        return lebar;
+    }
+
+    @Override
+    public void setLebar(int lebar) {
+        this.lebar = lebar;
+    }
+
+    @Override
+    public int getTinggi() {
+        return tinggi;
+    }
+
+    @Override
+    public void setTinggi(int tinggi) {
+        this.tinggi = tinggi;
+    }
+
+    @Override
+    public char getNilai() {
+        return nilai;
+    }
+
+    @Override
+    public void setNilai(char nilai) {
+        this.nilai = nilai;
+    }
+
 }
-
-
