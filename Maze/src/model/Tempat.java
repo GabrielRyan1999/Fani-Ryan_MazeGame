@@ -6,200 +6,133 @@
 package model;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
  * @author user only
  */
-public class Tempat {
-
-    private int tinggi; // tinggi tempat Game
-    private int lebar;  // lebar tempat Game
-    private ArrayList<Sel> daftarSel; // daftar sel
-
-    private String isi; // isi file konfigurasi
-
-    public static int batasKanan;
-    public static int batasBawah;
+public class Tempat extends JPanel implements Serializable {  
+    private ArrayList<Sel> sel = new ArrayList<>();
+    private LinkedList<String> undo = new LinkedList<>();
+    private int lebarTempat = 0;
+    private int tinggiTempat = 0;
+    private int jarak = 30;
+    private String isi;
+    private boolean completed = false;
+    private ArrayList Allperintah = new ArrayList();
 
     public Tempat() {
-        daftarSel = new ArrayList<>();
+        setFocusable(true);
     }
 
-    /**
-     * Fungsi pembaca file konfigurasi. Hasil pembacaan file akan disimpan di
-     * atribut 'isi' dan juga di atribut daftarSel
-     *
-     * @param file
-     */
-    public void bacaKonfigurasi(File file) {
-        try {
-            FileInputStream fis = new FileInputStream(file);
-            String hasilBaca = "";
-            int dataInt;
-            int baris = 0;
-            int kolom = 0;
-
-            while ((dataInt = fis.read()) != -1) {
-                if ((char) dataInt != '\n') {
-                    switch ((char) dataInt) {
-                        case '#': {
-                            hasilBaca = hasilBaca + (char) dataInt;
-                            Sel sel = new Sel();
-                            sel.setTinggi(50);
-                            sel.setLebar(50);
-                            this.setTinggi(50);
-                            this.setLebar(50);
-                            sel.setNilai((char) dataInt);
-                            sel.setWarna(Color.RED);
-                            sel.setBaris(baris);
-                            sel.setKolom(kolom);
-                            this.tambahSel(sel);
-                            kolom++;
-                            break;
-                        }
-                        case '.': {
-                            hasilBaca = hasilBaca + (char) dataInt;
-                            Sel sel = new Sel();
-                            sel.setTinggi(50);
-                            sel.setLebar(50);
-                            this.setTinggi(50);
-                            this.setLebar(50);
-                            sel.setNilai((char) dataInt);
-                            sel.setWarna(Color.WHITE);
-                            sel.setBaris(baris);
-                            sel.setKolom(kolom);
-                            this.tambahSel(sel);
-                            kolom++;
-                            break;
-                        }
-                        case '@': {
-                            hasilBaca = hasilBaca + (char) dataInt;
-                            Sel sel = new Sel();
-                            sel.setTinggi(50);
-                            sel.setLebar(50);
-                            this.setTinggi(50);
-                            this.setLebar(50);
-                            sel.setNilai((char) dataInt);
-                            sel.setWarna(Color.BLUE);
-                            sel.setBaris(baris);
-                            sel.setKolom(kolom);
-                            this.tambahSel(sel);
-                            kolom++;
-                            break;
-                        }
-                        case 'o': {
-                            hasilBaca = hasilBaca + (char) dataInt;
-                            Sel sel = new Sel();
-                            sel.setTinggi(50);
-                            sel.setLebar(50);
-                            this.setTinggi(50);
-                            this.setLebar(50);
-                            sel.setNilai((char) dataInt);
-                            sel.setWarna(Color.PINK);
-                            sel.setBaris(baris);
-                            sel.setKolom(kolom);
-                            this.tambahSel(sel);
-                            kolom++;
-                            break;
-                        }
-                        default:
-                            break;
-                    }
-                } else {
-                    baris++;
-                    kolom = 0;
-                    hasilBaca = hasilBaca + (char) dataInt;
-                }
-            }
-
-            this.setIsi(hasilBaca);
-
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Tempat.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Tempat.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public Tempat(File file) {
+        bacaKonfigurasi(file);
     }
 
-    /**
-     * Fungsi penambah daftar sel.
-     *
-     * @param sel
-     */
-    public void tambahSel(Sel sel) {
-        daftarSel.add(sel);
-    }
-
-    /**
-     * Fungsi hapus sel. Sel yang paling akhir diremove dari daftar sel.
-     */
-    public void hapusSel() {
-        if (!daftarSel.isEmpty()) {
-            daftarSel.remove(0);
-        }
-    }
-
-    /**
-     * @return the tinggi
-     */
-    public int getTinggi() {
-        return tinggi;
-    }
-
-    /**
-     * @param tinggi the tinggi to set
-     */
-    public void setTinggi(int tinggi) {
-        this.tinggi = tinggi;
-    }
-
-    /**
-     * @return the lebar
-     */
-    public int getLebar() {
-        return lebar;
-    }
-
-    /**
-     * @param lebar the lebar to set
-     */
-    public void setLebar(int lebar) {
-        this.lebar = lebar;
-    }
-
-    /**
-     * @return the daftarSel
-     */
-    public ArrayList<Sel> getDaftarSel() {
-        return daftarSel;
-    }
-
-    /**
-     * @param daftarSel the daftarSel to set
-     */
-    public void setDaftarSel(ArrayList<Sel> daftarSel) {
-        this.daftarSel = daftarSel;
-    }
-
-    /**
-     * @return the isi
-     */
     public String getIsi() {
         return isi;
     }
 
-    /**
-     * @param isi the isi to set
-     */
     public void setIsi(String isi) {
         this.isi = isi;
     }
+
+   
+    public ArrayList<Sel> getSel() {
+        return sel;
+    }
+
+    public void setSel(Player pemain, ArrayList<Wall> tembok, Finish finish) {
+        this.sel.add(pemain);
+        this.sel.addAll(tembok);
+        this.sel.add(finish);
+    }
+
+    public void simpanKonfigurasi(File file, Tempat tempat) {
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file, false);
+            for (int i = 0; i < tempat.getSel().size(); i++) {
+                String data = tempat.getSel().get(i).toString();
+                fos.write(data.getBytes());
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Tempat.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Tempat.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Tempat.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private void bacaKonfigurasi(File file) {
+        
+    
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);	   // Hapus background
+        // Tempat Gambar:
+        g.setColor(new Color(255, 255, 255));//set panel warna putih
+        g.fillRect(0, 0, this.getLebarTempat(), this.getTinggiTempat());// set tinggi lebar sesuai konfigurasi
+        if (!completed) {
+            for (int i = 0; i < sel.size(); i++) {
+                if (sel.get(i) != null) {
+                    Sel item = (Sel) sel.get(i);//map diterjemahkan dalam kelas pixel.
+                    g.drawImage(item.getImage(), item.getLebar(), item.getTinggi(), this);//proses gambar di panel
+                }
+            }
+        }
+        if (completed) {
+            g.setColor(Color.ORANGE);
+            g.setFont(new Font("Serif", Font.BOLD, 48));
+            g.drawString("Winner", 50, 80);
+        }
+    }
+
+    public int getLebarTempat() {
+        return lebarTempat;
+    }
+
+    public void setLebarTempat(int lebarTempat) {
+        this.lebarTempat = lebarTempat;
+    }
+
+    public int getTinggiTempat() {
+        return tinggiTempat;
+    }
+
+    public void setTinggiTempat(int tinggiTempat) {
+        this.tinggiTempat = tinggiTempat;
+    }
+
+    public void PerintahGerak(String input) {
+        String in[] = input.split(" ");
+        
+    }
+
+    private boolean cekPemainNabrakTembok(Sel pemain, String input) {  
+        return false;//default return false
+    }
+
+    
 }
