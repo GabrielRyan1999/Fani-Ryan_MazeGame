@@ -18,11 +18,9 @@ package model;
     private char nilai;
 
     public Finish(int x, int y, int lebar, int tinggi, char nilai) {
-        super(x, y);
-       
+        super(x, y);      
         this.lebar = lebar;
-        this.tinggi = tinggi;
-     
+        this.tinggi = tinggi;    
         this.setNilai(nilai);
     }
 

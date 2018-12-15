@@ -19,7 +19,6 @@ package model;
 
     public Wall(int x, int y, int lebar, int tinggi, char nilai) {
         super(x, y);
-        
         this.lebar = lebar;
         this.tinggi = tinggi;
         this.nilai = nilai;
