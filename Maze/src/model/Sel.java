@@ -5,168 +5,25 @@
  */
 package model;
 
-import model.Tempat;
-import java.awt.Color;
-import java.io.Serializable;
+import java.awt.Image;
 
 /**
  *
  * @author Ryan
  */
-public class Sel implements Serializable {
-
-    private char nilai;
+public class Sel {
+  private int lebar;
+    private int tinggi;
     private int posisiX;
     private int posisiY;
-    private int baris;
-    private int kolom;
-    private int lebar;
-    private int tinggi;
-    private Color warna;
+    private char nilai;
+    private Image image;//untuk menset gambar dalam pixel posisi xy
 
-    public Sel() {
-    }
+    private int Jarak = 30;//jika sudah menentukan jarak/pixel 20 maka semua gambar harus di set 20x20 pixel, dan jarak harus sama dengan dikelas Peta
 
-    public Sel(char nilai, int baris, int kolom, Color warna) {
-        this.nilai = nilai;
-        this.baris = baris;
-        this.kolom = kolom;
-        this.warna = warna;
-    }
-
-    public Sel(char nilai, int baris, int lebar) {
-        this.nilai = nilai;
-        this.baris = baris;
-        this.lebar = lebar;
-    }
-
-    public Sel(int baris, int kolom, int lebar, int tinggi, char nilai, Color warna) {
-
-        this.baris = baris;
-        this.kolom = kolom;
-        this.lebar = lebar;
-        this.tinggi = tinggi;
-        this.nilai = nilai;
-        this.warna = warna;
-    }
-
-    public Color getWarna() {
-        return warna;
-    }
-
-    public void setWarna(Color warna) {
-        this.warna = warna;
-    }
-
-    public char getNilai() {
-        return nilai;
-    }
-
-    public void setNilai(char nilai) {
-        this.nilai = nilai;
-    }
-
-    public int getPosisiX() {
-        return posisiX;
-    }
-
-    public void setPosisiX(int posisiX) {
-        this.posisiX = posisiX;
-    }
-
-    public int getPosisiY() {
-        return posisiY;
-    }
-
-    public void setPosisiY(int posisiY) {
-        this.posisiY = posisiY;
-    }
-
-    public boolean isPemain() {
-        return nilai == '@';
-    }
-
-    public boolean isHambatan() {
-        return nilai == '#';
-    }
-
-    public boolean isBatasKanan() {
-        if (kolom * lebar + lebar < Tempat.batasKanan) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Fungsi untuk menggeser sel ke kiri
-     */
-    public boolean isBatasKiri() {
-        if (kolom * lebar <= 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isBatasAtas() {
-        return false;
-    }
-
-    public boolean isBatasBawah() {
-        return false;
-    }
-
-    /**
-     * Fungsi untuk menggeser sel ke kanan
-     */
-    public void geserKanan() {
-        if (isBatasKanan() == false) {
-            kolom++;
-        }
-    }
-
-    /**
-     * Fungsi untuk menggeser sel ke kiri
-     */
-    public void geserKiri() {
-        if (isBatasKiri() == false) {
-            kolom--;
-        }
-    }
-
-    /**
-     * Fungsi untuk menggeser sel ke atas
-     */
-    public void geserAtas() {
-        if (isBatasAtas() == false) {
-            baris--;
-        }
-    }
-
-    /**
-     * Fungsi untuk menggeser sel ke bawah
-     */
-    public void geserBawah() {
-        if (isBatasBawah() == false) {
-           baris++;
-        }
-    }
-
-    public int getBaris() {
-        return baris;
-    }
-
-    public void setBaris(int baris) {
-        this.baris = baris;
-    }
-
-    public int getKolom() {
-        return kolom;
-    }
-
-    public void setKolom(int kolom) {
-        this.kolom = kolom;
+    public Sel(int x, int y) {
+        this.posisiX = x;
+        this.posisiY = y;
     }
 
     public int getLebar() {
@@ -185,4 +42,72 @@ public class Sel implements Serializable {
         this.tinggi = tinggi;
     }
 
+    public int getPosisiX() {
+        return posisiX;
+    }
+
+    public void setPosisiX(int posisiX) {
+        this.posisiX = posisiX;
+    }
+
+    public int getPosisiY() {
+        return posisiY;
+    }
+
+    public void setPosisiY(int posisiY) {
+        this.posisiY = posisiY;
+    }
+
+    public char getNilai() {
+        return nilai;
+    }
+
+    public void setNilai(char nilai) {
+        this.nilai = nilai;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public boolean PosisiKiriObjek(Sel Objek) {
+        if (((this.getLebar() - Jarak) == Objek.getLebar()) && (this.getTinggi() == Objek.getTinggi())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean PosisiKananObjek(Sel Objek) {
+        if (((this.getLebar() + Jarak) == Objek.getLebar()) && (this.getTinggi() == Objek.getTinggi())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean PosisiAtasObjek(Sel Objek) {
+        if (((this.getTinggi() - Jarak) == Objek.getTinggi()) && (this.getLebar() == Objek.getLebar())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean PosisiBawahObjek(Sel Objek) {
+        if (((this.getTinggi() + Jarak) == Objek.getTinggi()) && (this.getLebar() == Objek.getLebar())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(this.getNilai());
+    }
 }
