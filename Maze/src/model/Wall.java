@@ -5,13 +5,11 @@
  */
 package model;
 
-
 /**
  *
  * @author Ryan
  */
-
-    public class Wall extends Sel {
+public class Wall extends Sel {
 
     private int lebar;
     private int tinggi;
@@ -24,6 +22,34 @@ package model;
         this.nilai = nilai;
     }
 
-   
+    @Override
+    public int getLebar() {
+        return lebar;
+    }
+
+    @Override
+    public void setLebar(int lebar) {
+        this.lebar = lebar;
+    }
+
+    @Override
+    public int getTinggi() {
+        return tinggi;
+    }
+
+    @Override
+    public void setTinggi(int tinggi) {
+        this.tinggi = tinggi;
+    }
+
+    @Override
+    public char getNilai() {
+        return nilai;
+    }
+
+    @Override
+    public void setNilai(char nilai) {
+        this.nilai = nilai;
+    }
 
 }
