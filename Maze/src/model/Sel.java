@@ -17,10 +17,9 @@ public class Sel {
     private int posisiX;
     private int posisiY;
     private char nilai;
-    private Image image;//untuk menset gambar dalam pixel posisi xy
-
-    private int Jarak = 30;//jika sudah menentukan jarak/pixel 20 maka semua gambar harus di set 20x20 pixel, dan jarak harus sama dengan dikelas Peta
-
+    private Image image;
+    private int Jarak = 30;
+    
     public Sel(int x, int y) {
         this.posisiX = x;
         this.posisiY = y;
