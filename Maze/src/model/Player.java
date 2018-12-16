@@ -22,8 +22,8 @@ public class Player extends Sel {
     public Player(int x, int y, int lebar, int tinggi, char nilai) {
         super(x, y);
         URL loc = this.getClass().getResource("player.png");
-        ImageIcon iia = new ImageIcon(loc);
-        Image image = iia.getImage();
+        ImageIcon icon = new ImageIcon(loc);
+        Image image = icon.getImage();
         
         this.lebar = lebar;
         this.tinggi = tinggi;
