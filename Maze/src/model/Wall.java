@@ -24,10 +24,11 @@ public class Wall extends Sel {
         URL loc = this.getClass().getResource("wall.png");
         ImageIcon g = new ImageIcon(loc);
         Image image = g.getImage();
-        this.setImage(image);
+        
         this.lebar = lebar;
         this.tinggi = tinggi;
         this.nilai = nilai;
+        this.setImage(image);
     }
 
     @Override

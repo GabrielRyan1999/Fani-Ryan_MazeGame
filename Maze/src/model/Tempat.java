@@ -31,16 +31,17 @@ public class Tempat extends JPanel implements Serializable {
     private ArrayList<Sel> sel = new ArrayList<>();
     private Player pemain;
     private Finish finish;
-    private final char TEMBOK = '#';
-    private final char PEMAIN = '@';
-    private final char KOSONG = '.';
-    private final char FINISH = 'O';
-    private int lebarTempat = 0;
-    private int tinggiTempat = 0;
+    private final char dinding = '#';
+    private final char player = '@';
+    private final char kosong = '.';
+    private final char end = 'O';
+    private int lebar = 0;
+    private int tinggi = 0;
     private int jarak = 30;
     private String isi;
     private boolean completed = false;
     private File Alamatpeta;
+    private LinkedList<String> undo = new LinkedList<>();
     private ArrayList DaftarPerintah = new ArrayList();
 
     public Tempat() {
@@ -77,6 +78,57 @@ public class Tempat extends JPanel implements Serializable {
         this.sel.add(finish);
     }
 
+    private void bacaKonfigurasi(File file) {
+        try {
+            if (file != null) {
+                FileInputStream fis = new FileInputStream(file);
+                Alamatpeta = file;
+                int lebar = 0;
+                int tinggi = 0;
+                int posisiX = 0;
+                int posisiY = 0;
+                Wall tembok;
+                String isi = "";
+                int data;
+                while ((data = fis.read()) != -1) {
+                    isi = isi + (char) data;
+                    if ((char) data != '\n') {
+                        if ((char) data == dinding) {
+                            tembok = new Wall(posisiX, posisiY, lebar, tinggi, (char) data);
+                            setWall(tembok);
+                            posisiX++;
+                            lebar += jarak;
+                        } else if ((char) data == player) {
+                            pemain = new Player(posisiX, posisiY, lebar, tinggi, (char) data);
+                            posisiX++;
+                            lebar += jarak;
+                        } else if ((char) data == kosong) {
+                            posisiX++;
+                            lebar += jarak;
+                        } else if ((char) data == end) {
+                            finish = new Finish(posisiX, posisiY, lebar, tinggi, (char) data);
+                            posisiX++;
+                            lebar += jarak;
+                        }
+                    } else {
+                        posisiY++;
+                        tinggi += jarak;
+                        this.lebar = lebar;
+                        posisiX = 0;
+                        lebar = 0;
+                    }
+                    this.tinggi = tinggi;
+                }
+                setIsi(isi);
+                setSel(pemain, wall, finish);
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(Tempat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     public void simpanKonfigurasi(File file, Tempat tempat) {
         FileOutputStream fos = null;
         try {
@@ -98,101 +150,101 @@ public class Tempat extends JPanel implements Serializable {
         }
     }
 
-    private void bacaKonfigurasi(File file) {
-        try {
-            if (file != null) {
-                FileInputStream fis = new FileInputStream(file);
-                Alamatpeta = file;
-                int lebar = 0;
-                int tinggi = 0;
-                int posisiX = 0;
-                int posisiY = 0;
-                Wall tembok;
-                String isi = "";
-                int data;
-                while ((data = fis.read()) != -1) {
-                    isi = isi + (char) data;
-                    if ((char) data != '\n') {
-                        if ((char) data == TEMBOK) {
-                            tembok = new Wall(posisiX, posisiY, lebar, tinggi, (char) data);
-                            setWall(tembok);
-                            posisiX++;
-                            lebar += jarak;
-                        } else if ((char) data == PEMAIN) {
-                            pemain = new Player(posisiX, posisiY, lebar, tinggi, (char) data);
-                            posisiX++;
-                            lebar += jarak;
-                        } else if ((char) data == KOSONG) {
-                            posisiX++;
-                            lebar += jarak;
-                        } else if ((char) data == FINISH) {
-                            finish = new Finish(posisiX, posisiY, lebar, tinggi, (char) data);
-                            posisiX++;
-                            lebar += jarak;
-                        }
-                    } else {
-                        posisiY++;
-                        tinggi += jarak;
-                        lebarTempat = lebar;
-                        posisiX = 0;
-                        lebar = 0;
-                    }
-                    tinggiTempat = tinggi;
-                }
-                setIsi(isi);
-                setSel(pemain, wall, finish);
-            }
-
-        } catch (IOException ex) {
-            Logger.getLogger(Tempat.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);	   // Hapus background
-        // Tempat Gambar:
-        g.setColor(new Color(255, 255, 255));//set panel warna putih
-        g.fillRect(0, 0, this.getLebarTempat(), this.getTinggiTempat());// set tinggi lebar sesuai konfigurasi
+        super.paintComponent(g);
+        g.setColor(Color.white);
+
+        g.fillRect(0, 0, this.getLebar(), this.getTinggi());
         if (!completed) {
             for (int i = 0; i < sel.size(); i++) {
                 if (sel.get(i) != null) {
-                    Sel item = (Sel) sel.get(i);//map diterjemahkan dalam kelas pixel.
-                    g.drawImage(item.getImage(), item.getLebar(), item.getTinggi(), this);//proses gambar di panel
+                    Sel item = (Sel) sel.get(i);
+                    g.drawImage(item.getImage(), item.getLebar(), item.getTinggi(), this);
                 }
             }
         }
         if (completed) {
-            g.setColor(Color.ORANGE);
-            g.setFont(new Font("Serif", Font.BOLD, 48));
-            g.drawString("Winner", 50, 80);
+            g.setColor(Color.RED);
+            g.setFont(new Font("Verdana", Font.BOLD, 40));
+            g.drawString("Congratulation", 50, 80);
         }
     }
 
-    public int getLebarTempat() {
-        return lebarTempat;
+    public int getLebar() {
+        return lebar;
     }
 
-    public void setLebarTempat(int lebarTempat) {
-        this.lebarTempat = lebarTempat;
+    public void setLebar(int lebar) {
+        this.lebar = lebar;
     }
 
-    public int getTinggiTempat() {
-        return tinggiTempat;
+    public int getTinggi() {
+        return tinggi;
     }
 
-    public void setTinggiTempat(int tinggiTempat) {
-        this.tinggiTempat = tinggiTempat;
+    public void setTinggi(int tinggi) {
+        this.tinggi = tinggi;
     }
 
     public void PerintahGerak(String input) {
         String in[] = input.split(" ");
-        if (in[0].matches("[udrl]") || in[0].matches("[UDRL]") && in[1].matches("[123456789]") && in.length == 2) { 
+        if (in[0].equalsIgnoreCase("undo") && in[1].matches("[123456789]")) {
+            DaftarPerintah.add(input);
+            if (!undo.isEmpty()) {
+                for (int index = Integer.parseInt(String.valueOf(in[1])); index > 0; index--) {
+                    String x = undo.removeLast();
+                    String un[] = x.split(" ");
+                    if (un[0].equalsIgnoreCase("u")) {
+                        for (int i = 0; i < Integer.parseInt(String.valueOf(un[1])); i++) {
+                            if (cekPlayerTabrakTembok(pemain, "u")) {
+                                return;
+                            } else {
+                                pemain.Gerak(0, jarak);
+                                repaint();
+                            }
+
+                        }
+                    } else if (un[0].equalsIgnoreCase("d")) {
+                        for (int i = 0; i < Integer.parseInt(String.valueOf(un[1])); i++) {
+                            if (cekPlayerTabrakTembok(pemain, "d")) {
+                                return;
+                            } else {
+                                pemain.Gerak(0, -jarak);
+                                repaint();
+                            }
+                        }
+                    } else if (un[0].equalsIgnoreCase("r")) {
+                        for (int i = 0; i < Integer.parseInt(String.valueOf(un[1])); i++) {
+                            if (cekPlayerTabrakTembok(pemain, "r")) {
+                                return;
+                            } else {
+                                pemain.Gerak(-jarak, 0);
+                                repaint();
+                            }
+                        }
+                    } else if (un[0].equalsIgnoreCase("l")) {
+                        for (int i = 0; i < Integer.parseInt(String.valueOf(un[1])); i++) {
+                            if (cekPlayerTabrakTembok(pemain, "l")) {
+                                return;
+                            } else {
+                                pemain.Gerak(jarak, 0);
+                                repaint();
+                            }
+                        }
+
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Undo Telah Mencapai Akhir");
+            }
+
+        } else if (in[0].matches("[udrl]") || in[0].matches("[UDRL]") && in[1].matches("[123456789]") && in.length == 2) {
+            undo.addLast(input);
             DaftarPerintah.add(input);
             if (in[0].equalsIgnoreCase("u")) {
                 for (int i = 0; i < Integer.parseInt(String.valueOf(in[1])); i++) {
-                    if (cekPemainNabrakTembok(pemain, "u")) {
+                    if (cekPlayerTabrakTembok(pemain, "u")) {
                         return;
                     } else {
                         pemain.Gerak(0, -jarak);
@@ -203,7 +255,7 @@ public class Tempat extends JPanel implements Serializable {
                 }
             } else if (in[0].equalsIgnoreCase("d")) {
                 for (int i = 0; i < Integer.parseInt(String.valueOf(in[1])); i++) {
-                    if (cekPemainNabrakTembok(pemain, "d")) {
+                    if (cekPlayerTabrakTembok(pemain, "d")) {
                         return;
                     } else {
                         pemain.Gerak(0, jarak);
@@ -213,7 +265,7 @@ public class Tempat extends JPanel implements Serializable {
                 }
             } else if (in[0].equalsIgnoreCase("r")) {
                 for (int i = 0; i < Integer.parseInt(String.valueOf(in[1])); i++) {
-                    if (cekPemainNabrakTembok(pemain, "r")) {
+                    if (cekPlayerTabrakTembok(pemain, "r")) {
                         return;
                     } else {
                         pemain.Gerak(jarak, 0);
@@ -223,7 +275,7 @@ public class Tempat extends JPanel implements Serializable {
                 }
             } else if (in[0].equalsIgnoreCase("l")) {
                 for (int i = 0; i < Integer.parseInt(String.valueOf(in[1])); i++) {
-                    if (cekPemainNabrakTembok(pemain, "l")) {
+                    if (cekPlayerTabrakTembok(pemain, "l")) {
                         return;
                     } else {
                         pemain.Gerak(-jarak, 0);
@@ -233,13 +285,12 @@ public class Tempat extends JPanel implements Serializable {
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Input Tidak Valid, Silahkan Lihat Keterangan");
+            JOptionPane.showMessageDialog(null, "Input Salah! Cek Tutorial");
         }
-    
 
     }
 
-    private boolean cekPemainNabrakTembok(Sel pemain, String input) {
+    private boolean cekPlayerTabrakTembok(Sel pemain, String input) {
         boolean bantu = false;
         if (input.equals("l")) {
             for (int i = 0; i < wall.size(); i++) {
@@ -277,97 +328,8 @@ public class Tempat extends JPanel implements Serializable {
         }
         return bantu;
     }
-    
-       public void undo() {
-        for (int i = DaftarPerintah.size() - 1; i >= 0; i--) {
-            String input = DaftarPerintah.get(i).toString();
-            String[] undo = input.split(" ");
-            if (undo[1].equalsIgnoreCase("l")) {
-                if (cekPemainNabrakTembok(pemain, "r")) {
-                    return;
-                } else {
-                    pemain.Gerak((Integer.valueOf(undo[0]) * jarak), 0);
-                    repaint();
-                }
-                break;
-            } else if (undo[1].equalsIgnoreCase("r")) {
-                if (cekPemainNabrakTembok(pemain, "l")) {
-                    return;
-                } else {
-                    pemain.Gerak((Integer.valueOf(undo[0]) * -jarak), 0);
-                    repaint();
-                }
-                break;
-            } else if (undo[1].equalsIgnoreCase("u")) {
-                if (cekPemainNabrakTembok(pemain, "d")) {
-                    return;
-                } else {
-                    pemain.Gerak(0, (Integer.valueOf(undo[0]) * jarak));
-                    repaint();
-                }
-                break;
-            } else if (undo[1].equalsIgnoreCase("d")) {
-                if (cekPemainNabrakTembok(pemain, "u")) {
-                    return;
-                } else {
-                    pemain.Gerak(0, (Integer.valueOf(undo[0]) * -jarak));
-                    repaint();
-                }
-                break;
-            }
-        }
-    }
 
-    public void redo() {
-        for (int i = DaftarPerintah.size() - 1; i >= 0; i--) {
-            String input = DaftarPerintah.get(i).toString();
-            String[] redo = input.split(" ");
-            if (redo[1].equalsIgnoreCase("u")) {
-                for (int j = 0; j < Integer.parseInt(String.valueOf(redo[0])); j++) {
-                    if (cekPemainNabrakTembok(pemain, "u")) {
-                        return;
-                    } else {
-                        pemain.Gerak(0, -jarak);
-                        repaint();
-                    }
-
-                }
-                break;
-            } else if (redo[1].equalsIgnoreCase("d")) {
-                for (int j = 0; j < Integer.parseInt(String.valueOf(redo[0])); j++) {
-                    if (cekPemainNabrakTembok(pemain, "d")) {
-                        return;
-                    } else {
-                        pemain.Gerak(0, jarak);
-                        repaint();
-                    }
-                }
-                break;
-            } else if (redo[1].equalsIgnoreCase("r")) {
-                for (int j = 0; j < Integer.parseInt(String.valueOf(redo[0])); j++) {
-                    if (cekPemainNabrakTembok(pemain, "r")) {
-                        return;
-                    } else {
-                        pemain.Gerak(jarak, 0);
-                        repaint();
-                    }
-                }
-                break;
-            } else if (redo[1].equalsIgnoreCase("l")) {
-                for (int j = 0; j < Integer.parseInt(String.valueOf(redo[0])); j++) {
-                    if (cekPemainNabrakTembok(pemain, "l")) {
-                        return;
-                    } else {
-                        pemain.Gerak(-jarak, 0);
-                        repaint();
-                    }
-                }
-            }
-        }
-
-    }
-
-    public void pintas() {
+    public void cheat() {
         pemain.setLebar(finish.getLebar());
         pemain.setTinggi(finish.getTinggi());
         isCompleted();
@@ -381,12 +343,12 @@ public class Tempat extends JPanel implements Serializable {
     }
 
     public void restartLevel() {
-        DaftarPerintah.clear();//hapus semua perintah yang tersimpan
-        wall.clear();//hapus tembok
-        sel.clear();//hapus map
+        DaftarPerintah.clear();
+        wall.clear();
+        sel.clear();
         completed = false;
-        bacaKonfigurasi(Alamatpeta);//set ulang gambar peta
-        repaint();//gambar ulang
+        bacaKonfigurasi(Alamatpeta);
+        repaint();
     }
 
     public String getTeksPerintah() {

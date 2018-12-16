@@ -24,10 +24,11 @@ public class Player extends Sel {
         URL loc = this.getClass().getResource("player.png");
         ImageIcon iia = new ImageIcon(loc);
         Image image = iia.getImage();
-        this.setImage(image);
+        
         this.lebar = lebar;
         this.tinggi = tinggi;
         this.setNilai(nilai);
+        this.setImage(image);
     }
 
     public void Gerak(int x, int y) {

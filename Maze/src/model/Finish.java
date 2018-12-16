@@ -24,6 +24,7 @@ public class Finish extends Sel {
         URL loc = this.getClass().getResource("finish.png");
         ImageIcon icon = new ImageIcon(loc);
         Image image = icon.getImage();
+        
         this.lebar = lebar;
         this.tinggi = tinggi;
         this.setNilai(nilai);
