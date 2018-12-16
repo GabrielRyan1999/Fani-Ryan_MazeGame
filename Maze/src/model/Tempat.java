@@ -52,16 +52,16 @@ public class Tempat extends JPanel implements Serializable {
         bacaKonfigurasi(file);
     }
 
-    public String getIsi() {
-        return isi;
-    }
-
     public ArrayList<Wall> getWall() {
         return wall;
     }
 
     public void setWall(Wall wall) {
         this.wall.add(wall);
+    }
+
+    public String getIsi() {
+        return isi;
     }
 
     public void setIsi(String isi) {
