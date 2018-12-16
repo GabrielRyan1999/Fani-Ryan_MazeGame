@@ -5,6 +5,10 @@
  */
 package model;
 
+import java.awt.Image;
+import java.net.URL;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Ryan
@@ -17,6 +21,10 @@ public class Wall extends Sel {
 
     public Wall(int x, int y, int lebar, int tinggi, char nilai) {
         super(x, y);
+        URL loc = this.getClass().getResource("wall.png");
+        ImageIcon g = new ImageIcon(loc);
+        Image image = g.getImage();
+        this.setImage(image);
         this.lebar = lebar;
         this.tinggi = tinggi;
         this.nilai = nilai;

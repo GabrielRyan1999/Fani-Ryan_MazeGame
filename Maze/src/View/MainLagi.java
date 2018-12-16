@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import model.Tempat;
 import javax.swing.JPanel;
 
@@ -16,7 +17,7 @@ import javax.swing.JPanel;
  *
  * @author Aweng
  */
-public class MainUtama extends javax.swing.JFrame {
+public class MainLagi extends javax.swing.JFrame {
 
     private Tempat tempat;
     private int counter = 0;
@@ -24,7 +25,7 @@ public class MainUtama extends javax.swing.JFrame {
     /**
      * Creates new form Sokoban
      */
-    public MainUtama() {
+    public MainLagi() {
         this.tempat = new Tempat();
         initComponents();
         this.setLocationRelativeTo(null);
@@ -41,9 +42,6 @@ public class MainUtama extends javax.swing.JFrame {
     private void initComponents() {
 
         jFileChooser1 = new javax.swing.JFileChooser();
-        keteranganLabel = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         PixelPanel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -56,23 +54,16 @@ public class MainUtama extends javax.swing.JFrame {
         pintasButton = new javax.swing.JButton();
         resetButton = new javax.swing.JButton();
         tombolTambahanLabel = new javax.swing.JLabel();
+        undoButton = new javax.swing.JButton();
+        redoButton = new javax.swing.JButton();
+        tutorialButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        keteranganLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        keteranganLabel.setText("HOW TO PLAY");
-
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("PERINTAH\nU = up / naik\nD = down / turun\nR = right / kanan\nL = left / kiri\nInputan 2 karakter\nundo x = ulangi x langkah terakhir\n\nCONTOH\nU 5 = naik ke atas 5 langkah\nR 1 = geser ke kanan 1 langkah\nundo 1 = ulangi 1 langkah terakhir");
-        jScrollPane2.setViewportView(jTextArea1);
 
         PixelPanel.setBackground(new java.awt.Color(153, 153, 153));
         PixelPanel.setPreferredSize(new java.awt.Dimension(450, 428));
@@ -163,15 +154,28 @@ public class MainUtama extends javax.swing.JFrame {
         tombolTambahanLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tombolTambahanLabel.setText("TOMBOL TAMBAHAN");
 
-        fileMenu.setText("File");
-
-        jMenuItem1.setText("Tutorial");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        undoButton.setText("UNDO");
+        undoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                undoButtonActionPerformed(evt);
             }
         });
-        fileMenu.add(jMenuItem1);
+
+        redoButton.setText("REDO");
+        redoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redoButtonActionPerformed(evt);
+            }
+        });
+
+        tutorialButton.setText("TUTORIAL");
+        tutorialButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tutorialButtonActionPerformed(evt);
+            }
+        });
+
+        fileMenu.setText("File");
 
         openMenuItem.setText("Open");
         openMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -212,23 +216,21 @@ public class MainUtama extends javax.swing.JFrame {
                     .addComponent(PixelPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(keteranganLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                        .addGap(67, 67, 67)
+                        .addComponent(tombolTambahanLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(46, 46, 46)
-                        .addComponent(pintasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(undoButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pintasButton, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
                         .addGap(53, 53, 53)
-                        .addComponent(resetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(resetButton, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                            .addComponent(redoButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addComponent(tombolTambahanLabel)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(90, 90, 90)
+                        .addComponent(tutorialButton, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,16 +239,18 @@ public class MainUtama extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(keteranganLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
+                .addGap(306, 306, 306)
                 .addComponent(tombolTambahanLabel)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(resetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pintasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(undoButton, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(redoButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tutorialButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -263,13 +267,11 @@ public class MainUtama extends javax.swing.JFrame {
             PixelPanel.add(tempat);
             tempat.setSize(450, 428);
             resetSemua();
-            // menampilkan atribut 'isi' dari kelas Tempat
             System.out.println("\nIsi peta Baru = ");
             System.out.println(tempat.getIsi());
             System.out.println("\nKoordinat titik");
             if (tempat.getSel() != null) {
-                for (int i = 0; i < tempat.getSel().size(); i++) {
-                    // menampilkan nilai posisiX,posisiY dan nilai
+                for (int i = 0; i < tempat.getSel().size(); i++) {   
                     System.out.println(
                             tempat.getSel().get(i).getPosisiY() + ","
                             + tempat.getSel().get(i).getPosisiX() + ","
@@ -277,15 +279,11 @@ public class MainUtama extends javax.swing.JFrame {
                 }
             }
         }
-        //Setelah diset panel pixel, kita letakan posisi peta ditengah pixel panel
         int lebar = PixelPanel.getWidth();
         int tinggi = PixelPanel.getHeight();
-        //mendapatkan titik koordinat x,y
         int x = (lebar - tempat.getWidth());
         int y = (tinggi - tempat.getHeight());
         tempat.setLocation(0, y);
-//        // buat tempatPanel dan tambahkan tempat ke tempatPanel
-//        peta = new Peta();
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -323,9 +321,45 @@ public class MainUtama extends javax.swing.JFrame {
         resetSemua();
     }//GEN-LAST:event_resetButtonActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        tempat.undo();
+    }//GEN-LAST:event_undoButtonActionPerformed
+
+    private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoButtonActionPerformed
+        // TODO add your handling code here:
+        tempat.redo();
+    }//GEN-LAST:event_redoButtonActionPerformed
+
+    private void tutorialButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tutorialButtonActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "SELAMAT DATANG DI PERMAINAN MAZE GAME !\n"
+                + "\n"
+                + "Gunakan perintah pada keyboard untuk \n"
+                + "menggerakkan pemain menuju tujuannya\n"
+                + "\n"
+                + "Format perintah :\n"
+                + "N X\n"
+                + "\n"
+                + "N = jumlah langkah\n"
+                + "X = arah gerakan\n"
+                + "\n"
+                + "Arah Gerakan :\n"
+                + "U = up/naik\n"
+                + "D = down/turun\n"
+                + "R = right/kanan\n"
+                + "L = left/kiri\n"
+                + "\n"
+                + "Kalian dapat memilih map permainan \n"
+                + "pada menu map yang tersedia.\n"
+                + "\n"
+                + "anda dapat mereset, mengsave dan \n"
+                + "mengload permainan untuk satu map yang\n"
+                + "sama.\n"
+                + "\n"
+                + "      ===== SELAMAT BERMAIN ===== ");
+                           
+    }//GEN-LAST:event_tutorialButtonActionPerformed
 
     private void resetSemua() {
         tempat.restartLevel();
@@ -353,19 +387,19 @@ public class MainUtama extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainUtama.class
+            java.util.logging.Logger.getLogger(MainLagi.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainUtama.class
+            java.util.logging.Logger.getLogger(MainLagi.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainUtama.class
+            java.util.logging.Logger.getLogger(MainLagi.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainUtama.class
+            java.util.logging.Logger.getLogger(MainLagi.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -381,7 +415,7 @@ public class MainUtama extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MainUtama().setVisible(true);
+                new MainLagi().setVisible(true);
             }
         });
     }
@@ -394,20 +428,19 @@ public class MainUtama extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel jumlahPerintah;
     private javax.swing.JTextField jumlahPerintahText;
-    private javax.swing.JLabel keteranganLabel;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JTextArea outputTextArea;
     private javax.swing.JTextField perintah;
     private javax.swing.JButton pintasButton;
+    private javax.swing.JButton redoButton;
     private javax.swing.JButton resetButton;
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JLabel tombolTambahanLabel;
+    private javax.swing.JButton tutorialButton;
+    private javax.swing.JButton undoButton;
     // End of variables declaration//GEN-END:variables
 }

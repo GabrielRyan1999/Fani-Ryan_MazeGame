@@ -5,6 +5,10 @@
  */
 package model;
 
+import java.awt.Image;
+import java.net.URL;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Ryan
@@ -17,9 +21,13 @@ public class Finish extends Sel {
 
     public Finish(int x, int y, int lebar, int tinggi, char nilai) {
         super(x, y);
+        URL loc = this.getClass().getResource("finish.png");
+        ImageIcon icon = new ImageIcon(loc);
+        Image image = icon.getImage();
         this.lebar = lebar;
         this.tinggi = tinggi;
         this.setNilai(nilai);
+        this.setImage(image);
     }
 
     @Override
