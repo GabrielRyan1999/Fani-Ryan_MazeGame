@@ -42,7 +42,7 @@ public class Tempat extends JPanel implements Serializable {
     private String isi;
     private boolean completed = false;
     private File Alamatpeta;
-    private ArrayList Allperintah = new ArrayList();
+    private ArrayList DaftarPerintah = new ArrayList();
 
     public Tempat() {
         setFocusable(true);
@@ -229,6 +229,95 @@ public class Tempat extends JPanel implements Serializable {
             }
         }
         return bantu;
+    }
+    
+       public void undo() {
+        for (int i = semuaPerintah.size() - 1; i >= 0; i--) {
+            String input = semuaPerintah.get(i).toString();
+            String[] undo = input.split(" ");
+            if (undo[1].equalsIgnoreCase("l")) {
+                if (cekObjekNabrakDinding(pemain, "r")) {
+                    return;
+                } else {
+                    pemain.Gerak((Integer.valueOf(undo[0]) * jarak), 0);
+                    repaint();
+                }
+                break;
+            } else if (undo[1].equalsIgnoreCase("r")) {
+                if (cekObjekNabrakDinding(pemain, "l")) {
+                    return;
+                } else {
+                    pemain.Gerak((Integer.valueOf(undo[0]) * -jarak), 0);
+                    repaint();
+                }
+                break;
+            } else if (undo[1].equalsIgnoreCase("u")) {
+                if (cekObjekNabrakDinding(pemain, "d")) {
+                    return;
+                } else {
+                    pemain.Gerak(0, (Integer.valueOf(undo[0]) * jarak));
+                    repaint();
+                }
+                break;
+            } else if (undo[1].equalsIgnoreCase("d")) {
+                if (cekObjekNabrakDinding(pemain, "u")) {
+                    return;
+                } else {
+                    pemain.Gerak(0, (Integer.valueOf(undo[0]) * -jarak));
+                    repaint();
+                }
+                break;
+            }
+        }
+    }
+
+    public void redo() {
+        for (int i = semuaPerintah.size() - 1; i >= 0; i--) {
+            String input = semuaPerintah.get(i).toString();
+            String[] redo = input.split(" ");
+            if (redo[1].equalsIgnoreCase("u")) {
+                for (int j = 0; j < Integer.parseInt(String.valueOf(redo[0])); j++) {
+                    if (cekObjekNabrakDinding(pemain, "u")) {
+                        return;
+                    } else {
+                        pemain.Gerak(0, -jarak);
+                        repaint();
+                    }
+
+                }
+                break;
+            } else if (redo[1].equalsIgnoreCase("d")) {
+                for (int j = 0; j < Integer.parseInt(String.valueOf(redo[0])); j++) {
+                    if (cekObjekNabrakDinding(pemain, "d")) {
+                        return;
+                    } else {
+                        pemain.Gerak(0, jarak);
+                        repaint();
+                    }
+                }
+                break;
+            } else if (redo[1].equalsIgnoreCase("r")) {
+                for (int j = 0; j < Integer.parseInt(String.valueOf(redo[0])); j++) {
+                    if (cekObjekNabrakDinding(pemain, "r")) {
+                        return;
+                    } else {
+                        pemain.Gerak(jarak, 0);
+                        repaint();
+                    }
+                }
+                break;
+            } else if (redo[1].equalsIgnoreCase("l")) {
+                for (int j = 0; j < Integer.parseInt(String.valueOf(redo[0])); j++) {
+                    if (cekObjekNabrakDinding(pemain, "l")) {
+                        return;
+                    } else {
+                        pemain.Gerak(-jarak, 0);
+                        repaint();
+                    }
+                }
+            }
+        }
+
     }
 
     public void pintas() {
