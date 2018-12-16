@@ -40,7 +40,7 @@ public class Tempat extends JPanel implements Serializable {
     private int jarak = 30;
     private String isi;
     private boolean completed = false;
-    private File Alamatpeta;
+    private File alamatPeta;
     private LinkedList<String> undo = new LinkedList<>();
     private ArrayList DaftarPerintah = new ArrayList();
 
@@ -82,7 +82,7 @@ public class Tempat extends JPanel implements Serializable {
         try {
             if (file != null) {
                 FileInputStream fis = new FileInputStream(file);
-                Alamatpeta = file;
+                alamatPeta = file;
                 int lebar = 0;
                 int tinggi = 0;
                 int posisiX = 0;
@@ -347,7 +347,7 @@ public class Tempat extends JPanel implements Serializable {
         wall.clear();
         sel.clear();
         completed = false;
-        bacaKonfigurasi(Alamatpeta);
+        bacaKonfigurasi(alamatPeta);
         repaint();
     }
 
