@@ -8,8 +8,6 @@ package test;
 import java.awt.Color;
 import model.Sel;
 import model.Tempat;
-import View.GameFrame;
-import View.TempatPanel;
 
 /**
  *

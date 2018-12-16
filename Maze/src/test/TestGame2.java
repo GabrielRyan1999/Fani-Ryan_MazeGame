@@ -9,8 +9,6 @@ import java.awt.Color;
 import javax.swing.JFileChooser;
 import model.Sel;
 import model.Tempat;
-import View.GameFrame;
-import View.TempatPanel;
 
 /**
  *
